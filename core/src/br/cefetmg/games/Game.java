@@ -24,7 +24,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Game extends ApplicationAdapter {
 
     private SpriteBatch batch;
-    private Texture texturaGoomba; 
+    private Texture spriteSheet; 
     private Goomba goombaPlay;
     private Texture[] mapLevelsTextures;
     
@@ -37,8 +37,8 @@ public class Game extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        texturaGoomba = new Texture("goomba.png");
-        goombaPlay = new Goomba(texturaGoomba);
+        spriteSheet = new Texture("goomba-spritesheet.png");
+        goombaPlay = new Goomba(spriteSheet);
         mapLevelsTextures = new Texture[2];
         mapLevelsTextures[0] = new Texture("map-level-1.png");
         mapLevelsTextures[1] = new Texture("map-level-2.png");
@@ -80,7 +80,7 @@ public class Game extends ApplicationAdapter {
             // desenhos são realizados aqui
             batch.draw(mapLevelsTextures[0], 0, 0);
             batch.draw(mapLevelsTextures[1], 0, 0);
-            jogador.draw(batch);
+            goombaPlay.render(batch);
 
         batch.end();
     }
@@ -96,36 +96,10 @@ public class Game extends ApplicationAdapter {
      * @param delta o tempo que passou desde o último "quadro".
      */
     public void update(float delta) {
-        float posX = jogador.getX();
-        float posY = jogador.getY();
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
-            if (posX <=  Gdx.graphics.getWidth() - jogador.getWidth()) {
-                jogador.setPosition(posX + 1, posY);
-            }
-            
-        }
-        if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
-            if (posY >= 0 ) {
-                jogador.setPosition(posX, posY - 1);
-            }
-            
-        }
-        if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
-            if (posX >= -1 ) {
-               jogador.setPosition(posX - 1, posY); 
-            }
-            
-        }
-        if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
-            if (posY <=  Gdx.graphics.getHeight()- jogador.getHeight()) {
-                jogador.setPosition(posX, posY + 1);
-            }
-            
-        }
-
+        goombaPlay.update();
         // ...
     }
     
